@@ -1,0 +1,6 @@
+name: Weather Info Plugin
+type: module
+description: Fetches weather details from weatherstack API and displays them in a block.
+core_version_requirement: ^8.0 || ^9.0 || 10.0
+package: Custom
+

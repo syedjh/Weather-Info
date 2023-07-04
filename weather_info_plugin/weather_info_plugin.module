@@ -1,0 +1,59 @@
+<?php
+
+use Drupal\block\Entity\Block;
+
+/**
+ * Implements hook_cron().
+ */
+function weather_info_plugin_cron() {
+
+  // \Drupal::logger('test cron')->notice('<pre>'.print_r('cron succeed', TRUE).'</pre>');
+  $data = fetchDataForBlock();
+  // \Drupal::logger('cron data')->notice('<pre>'.print_r($data, TRUE).'</pre>');
+  updateWeatherInfoBlock($data);
+}
+
+function fetchDataForBlock() {
+
+  $api_key = '375ef97a7f9e04ccaa840547af914941';
+  $location = 'Bhavani';
+  $url = "http://api.weatherstack.com/current?access_key=$api_key&query=$location";
+
+  $curl = curl_init($url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  $response = curl_exec($curl);
+  curl_close($curl);
+
+  $data = json_decode($response, true);
+
+  if (isset($data['current'])) {
+    return [
+      'temperature' => $data['current']['temperature'],
+      'humidity' => $data['current']['humidity'],
+      'wind_speed' => $data['current']['wind_speed'],
+    ];
+  }
+
+  return [];
+}
+
+function updateWeatherInfoBlock($weatherDetails) {
+  $block_id = 'weather_info_block';
+  $block = Block::load($block_id);
+
+  if ($block && $weatherDetails) {
+    $block->set('field_content', [
+      '#markup' => renderWeatherDetails($weatherDetails),
+    ]);
+
+    $block->save();
+  }
+}
+
+function renderWeatherDetails(array $weatherDetails) {
+  $output = 'Temperature: ' . $weatherDetails['temperature'] . '°C<br>';
+  $output .= 'Humidity: ' . $weatherDetails['humidity'] . '%<br>';
+  $output .= 'Wind Speed: ' . $weatherDetails['wind_speed'] . ' km/h';
+
+  return $output;
+}
