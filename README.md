@@ -17,17 +17,10 @@ This Drupal module fetches weather details from an external API and displays the
 1. Download and install the module in the `modules/custom` directory of your Drupal installation.
 2. Enable the module through the Drupal administration interface or using Drush.
 3. Obtain an API key from Weatherstack (https://weatherstack.com).
-4. Configure the API key in the module settings page (/admin/config/weather-info-plugin).
-
-## Configuration
-
-- Navigate to the module settings page (/admin/config/weather-info-plugin).
-- Enter your Weatherstack API key in the provided field.
-- Save the configuration.
-
+   
 ## Usage
 
-- After enabling the module and configuring the API key, a new "Weather Info" block will be available.
+- After enabling the module a new "Weather Info" block will be available.
 - Add the block to a region of your choice using the block layout configuration page (/admin/structure/block).
 - Customize the block's appearance and visibility settings as desired.
 
